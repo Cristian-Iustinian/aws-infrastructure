@@ -1,0 +1,21 @@
+# --- TERRAFORM ---
+*.tfstate
+*.tfstate.*
+crash.log
+*.tfvars
+*.tfstate.backup
+.terraform/
+
+# --- ANSIBLE ---
+# Fișiere de retry generate automat de Ansible când un task eșuează
+*.retry
+
+# Chei SSH private (FOARTE IMPORTANT: nu urca niciodată fișiere .pem sau chei private pe GitHub!)
+*.pem
+*.key
+id_rsa
+id_rsa.pub
+id_ed25519
+id_ed25519.pub
+# Fișiere temporare sau de cache Ansible
+.ansible/

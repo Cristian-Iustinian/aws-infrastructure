@@ -1,0 +1,15 @@
+---
+- name: Install Docker and Git
+  hosts: all
+  become: true
+
+  tasks:
+   - name: Install docker
+     ansible.builtin.yum: 
+       name: docker
+       state: present
+
+   - name: Install git
+     ansible.builtin.yum: 
+       name: git
+       state: present 
