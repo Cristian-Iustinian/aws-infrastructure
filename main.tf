@@ -34,7 +34,7 @@ data "aws_ami" "ubuntu" {
   owners = ["099720109477"] # Canonical
 }
 resource "aws_key_pair" "deployer" {
-  key_name   = "devops-key"
+  key_name   = "devops-key-london"
   public_key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPg+dTRFpmXn7MByKv5+u0e7jyUE3X9E7kAM4Lnc87x6 marincristianiustinian@Marins-MacBook-Pro.local"
 }
 resource "aws_internet_gateway" "gw" {
