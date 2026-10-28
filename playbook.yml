@@ -5,11 +5,11 @@
 
   tasks:
    - name: Install docker
-     ansible.builtin.yum: 
+     ansible.builtin.apt: 
        name: docker
        state: present
 
    - name: Install git
-     ansible.builtin.yum: 
+     ansible.builtin.apt: 
        name: git
        state: present 
