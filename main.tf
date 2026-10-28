@@ -113,3 +113,22 @@ resource "aws_instance" "app_private" {
 	instance_type = "t3.micro"
 	subnet_id = aws_subnet.private.id
 }
+
+resource "local_file" "ansible_inventory" {
+  content = <<-EOT
+    [web_servers]
+    ${aws_instance.web_public.public_ip} ansible_user=ubuntu ansible_ssh_private_key_file=~/.ssh/id_ed25519
+
+    [private_servers]
+    server_privat ansible_host=${aws_instance.app_private.private_ip}
+
+    [private_servers:vars]
+    ansible_user=ubuntu
+    ansible_ssh_private_key_file=~/.ssh/id_ed25519
+    ansible_ssh_common_args='-o ProxyJump=ubuntu@${aws_instance.web_public.public_ip} -o StrictHostKeyChecking=no'
+    ansible_become=true
+    ansible_become_method=sudo
+    ansible_become_pass=""
+  EOT
+  filename = "${path.module}/inventory"
+}
