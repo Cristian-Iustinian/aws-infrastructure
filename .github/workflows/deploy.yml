@@ -38,6 +38,8 @@ jobs:
 
     # 4. Rulare Ansible Playbook (folosind fișierul tău 'inventory')
     - name: Run Ansible Playbook
+      env:
+        ANSIBLE_HOST_KEY_CHECKING: "False"
       run: |
         sudo apt-get update && sudo apt-get install -y ansible
         ansible-playbook -i inventory playbook.yml
