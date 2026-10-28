@@ -4,12 +4,16 @@
   become: true
 
   tasks:
-   - name: Install docker
-     ansible.builtin.apt: 
-       name: docker.io
-       state: present
+    - name: Update apt cache
+      ansible.builtin.apt:
+        update_cache: yes
 
-   - name: Install git
-     ansible.builtin.apt: 
-       name: git
-       state: present 
+    - name: Install docker
+      ansible.builtin.apt: 
+        name: docker.io
+        state: present
+
+    - name: Install git
+      ansible.builtin.apt: 
+        name: git
+        state: present
