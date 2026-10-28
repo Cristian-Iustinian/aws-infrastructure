@@ -132,3 +132,36 @@ resource "local_file" "ansible_inventory" {
   EOT
   filename = "${path.module}/inventory"
 }
+
+resource "aws_security_group" "web_sg" {
+  name   = "devops-web-sg"
+  vpc_id = aws_vpc.main.id
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 5000 # sau portul pe care rulează Flask
+    to_port     = 5000
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+resource "aws_instance" "web_public" {
+	ami                  = "ami-07a52e291ed653aa8"
+	instance_type        = "t3.micro"
+	subnet_id            = aws_subnet.public.id
+	vpc_security_group_ids = [aws_security_group.web_sg.id]
+}
