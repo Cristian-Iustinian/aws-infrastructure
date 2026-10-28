@@ -33,7 +33,10 @@ data "aws_ami" "ubuntu" {
   }
   owners = ["099720109477"] # Canonical
 }
-
+resource "aws_key_pair" "deployer" {
+  key_name   = "devops-key"
+  public_key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPg+dTRFpmXn7MByKv5+u0e7jyUE3X9E7kAM4Lnc87x6 marincristianiustinian@Marins-MacBook-Pro.local"
+}
 resource "aws_internet_gateway" "gw" {
    vpc_id = aws_vpc.main.id
    
@@ -120,12 +123,14 @@ resource "aws_instance" "web_public" {
 	instance_type = "t3.micro"
 	subnet_id = aws_subnet.public.id
 	vpc_security_group_ids = [aws_security_group.web_sg.id]
+	key_name = aws_key_pair.deployer.key_name
 }
 
 resource "aws_instance" "app_private" {
 	ami = data.aws_ami.ubuntu.id
 	instance_type = "t3.micro"
 	subnet_id = aws_subnet.private.id
+	key_name = aws_key_pair.deployer.key_name
 }
 
 resource "local_file" "ansible_inventory" {
