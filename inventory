@@ -1,10 +1,10 @@
 [web_servers]
-63.181.77.21 ansible_user=ubuntu ansible_ssh_private_key_file=/Users/marincristianiustinian/.ssh/id_ed25519
+18.197.97.16 ansible_user=ubuntu ansible_ssh_private_key_file=~/.ssh/id_ed25519
 
 [private_servers]
 server_privat ansible_host=10.0.2.188
 
 [private_servers:vars]
 ansible_user=ubuntu
-ansible_ssh_private_key_file=/Users/marincristianiustinian/.ssh/id_ed25519
-ansible_ssh_common_args='-o ProxyCommand="ssh -W %h:%p -q -o StrictHostKeyChecking=no -i /Users/marincristianiustinian/.ssh/id_ed25519 ubuntu@63.181.77.21"'
+ansible_ssh_private_key_file=~/.ssh/id_ed25519
+ansible_ssh_common_args='-o ProxyJump=ubuntu@18.197.97.16 -o StrictHostKeyChecking=no'

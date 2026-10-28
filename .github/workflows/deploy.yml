@@ -1,0 +1,43 @@
+name: Deploy Flask App with Terraform and Ansible
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    # 1. Configurare AWS Credentials
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: eu-central-1 # Modifică cu regiunea ta AWS
+
+    # 2. Setare Terraform
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v3
+
+    - name: Terraform Init & Apply
+      run: |
+        terraform init
+        terraform apply -auto-approve
+
+    # 3. Salvare cheie SSH privată
+    - name: Setup SSH Key
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
+        chmod 600 ~/.ssh/id_ed25519
+
+    # 4. Rulare Ansible Playbook (folosind fișierul tău 'inventory')
+    - name: Run Ansible Playbook
+      run: |
+        sudo apt-get update && sudo apt-get install -y ansible
+        ansible-playbook -i inventory playbook.yml
